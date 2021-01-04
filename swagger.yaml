@@ -1,0 +1,140 @@
+openapi: 3.0.0
+info:
+  description: This is a sample server Petstore server. For this sample, you can use
+    the api key `special-key` to test the authorization filters.
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: OpenAPI Petstore
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: jsonplaceholder.typicode.com
+tags:
+  - description: Operations about post
+    name: post
+paths:
+  /posts:
+    get:
+      description: Returns a map of status codes to quantities
+      operationId: getPosts
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: successful operation
+        "404":
+          description: Posts not found
+      summary: Get all posts
+      tags:
+        - posts
+components:
+  requestBodies:
+    PostArray:
+      content:
+        application/json:
+          schema:
+            items:
+              $ref: '#/components/schemas/Post'
+            type: array
+      description: List of post object
+      required: true
+    Post:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Post'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Post'
+      description: Post object that needs to be added to the store
+      required: true
+    inline_object:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+    inline_object_1:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+  schemas:
+    Post:
+      description: A Post from Dummy post API
+      example:
+        name: ipsom del muntes
+        id: 0
+        category:
+          name: name
+          id: 6
+        tags:
+          - name: name
+            id: 1
+          - name: name
+            id: 1
+        status: available
+      properties:
+        id:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+        name:
+          example: send_love_not_nudes
+          type: string
+      required:
+        - id
+    ApiResponse:
+      description: Describes the result of uploading an image resource
+      example:
+        code: 0
+        type: type
+        message: message
+      properties:
+        code:
+          format: int32
+          type: integer
+        type:
+          type: string
+        message:
+          type: string
+      title: An uploaded response
+      type: object
+    inline_object:
+      properties:
+        name:
+          description: Updated name of the pet
+          type: string
+        status:
+          description: Updated status of the pet
+          type: string
+      type: object
+    inline_object_1:
+      properties:
+        additionalMetadata:
+          description: Additional data to pass to server
+          type: string
+        file:
+          description: file to upload
+          format: binary
+          type: string
+      type: object
+  securitySchemes:
+    petstore_auth:
+      flows:
+        implicit:
+          authorizationUrl: http://petstore.swagger.io/api/oauth/dialog
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+      type: oauth2
+    api_key:
+      in: header
+      name: api_key
+      type: apiKey
